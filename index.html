@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task-1</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+    <link href="css/reset.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="form">
+
+        <h1>Request a demo</h1>
+        
+        <form name="contact_form" action="http://itcraft.com.ua/html­css­internship­2016­0439599340/form­controller.php" method="post">
+        
+            <div class="input">
+                <label for="firstName">First Name</label>
+                <input name="form_data[first_name]" type="text" id="firstName" />
+            </div>
+
+            <div class="input">        
+                <label for="lastName">Last Name</label>
+                <input name="form_data[last_name]" type="text" id="lastName" />
+            </div>
+
+            <div class="input">
+                <label for="email">Email *</label>
+                <input name="form_data[email]" type="text" id="email" />
+            </div>
+
+            <div class="input phone clearfix">
+                <label for="phoneNumber">Phone Number</label>
+                <input name="form_data[phone][country]" type="text" id="phoneNumber" />
+                <input name="form_data[phone][code]" type="text" />
+                <input name="form_data[phone][number]" type="text" />
+            </div>
+
+            <div class="input search">
+                <label for="searchSchool">School/Organization *</label>
+                <input name="form_data[school_organization]" type="text" id="searchSchool" />
+                <input type="submit" />
+            </div>
+
+            <div class="input">
+                <label for="roleOnCampus">Role on Campus *</label>
+                <input name="form_data[role]" type="text" id="roleOnCampus" />
+            </div>
+                    
+            <div class="textarea">
+                <label for="textarea">What are your goals for DemoSystem? *</label>
+                <textarea name="form_data[goals]" id="textarea"></textarea>
+            </div>
+
+            <div class="checkbox">
+                <input type="checkbox" id="check_button" />
+                <label for="check_button">I agree to the DemoSystem <a href="#" title="Terms of Service">Terms of Service</a> and <a href="#" title="Privacy Policy">Privacy Policy</a></label>
+            </div>
+            
+            <div class="btns">
+                <input type="submit" value="Submit" class="active" id="send" />
+                <span class="cancel">Cancel</span>
+            </div>
+                
+        </form>   
+
+    </div>  <!-- /.form  -->
+    
+    <script type="text/javascript">
+		var error = false;
+		var field = $('[type="text"], [type="checkbox"], textarea');
+		var submitBtn = $('#send');
+		
+        field.focus(function(){
+            $(this).parent('div').find('label').addClass('focused');
+        });
+		field.blur(function(){
+            $(this).parent('div').find('label').removeClass('focused');
+        });
+
+        //validation
+        function validation(thisInput, regExp){
+            var inputVal = thisInput.val();
+            if(!regExp.test(inputVal)) {
+                thisInput.parent().addClass('invalid').removeClass('valid');
+                error = true;
+            } else {
+                if (!error){
+                    thisInput.parent().removeClass('invalid').addClass('valid');
+                }
+            }
+        }
+        
+        field.blur(function(){
+            if ($(this).val() === '') {
+                $(this).parent().addClass('invalid');
+            } 
+            else if ($(this).val() != '' && $(this).attr('id') === 'email') {
+                validation($(this), /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i);
+            }
+            else if ($(this).val() != '' && $(this).attr('id') === 'firstName' || $(this).attr('id') === 'lastName') {
+                validation($(this), /^[A-z]+$/);
+            }
+            else if ($(this).val() != '' && $(this).parent().hasClass('phone')) {
+                var phoneInput = $(this).parent().find('input');
+                $.each(phoneInput, function(i){
+                    validation($(this), /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+                });
+            } 
+            else if ($(this).attr('type') === 'checkbox' && !$(this).attr('checked')) {
+                $(this).parent().addClass('invalid');
+            }
+            else {
+                $(this).parent().removeClass('invalid').addClass('valid');
+            }
+        });
+        
+        field.focus(function(){
+            error = false;
+            $(this).parent().removeClass('invalid').removeClass('valid');
+        });
+        
+        submitBtn.click(function(e){
+            if ($('form .invalid').length || field.val() === '' && !field.attr('checked')) {
+                e.preventDefault();
+                $.each(field, function(){
+                    if ($(this).attr('type') != 'checkbox' && $(this).val() === '' || $(this).attr('type') === 'checkbox' && !$(this).attr('checked')) {
+                        $(this).parent().addClass('invalid');
+                    } 
+                });
+            } else {
+                return true;
+            }
+        });
+    </script>
+
+</body>
+</html>
